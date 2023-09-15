@@ -6,6 +6,10 @@ from django.contrib.auth import authenticate, login
 from .utils import send_otp 
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.shortcuts import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+
 import pyotp
 
 def home(request):
@@ -25,21 +29,21 @@ def register(request):
         form = UserRegisterForm()
         return render(request, 'users/register.html', {'form':form})
     
-def login(request):
-    error_message = None
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            request.session['username'] = username
-            return redirect('otp_view') #profile
-        else:
-            error_message = 'Invalid username or password'
-            return render(request, 'login.html', {'error_message': error_message})
+#def login(request):
+    #error_message = None
+    #if request.method == 'POST':
+        #username = request.POST['username']
+        #password = request.POST['password']
+        #user = authenticate(request, username=username, password=password)
+        #if user is not None:
+            #request.session['username'] = username
+            #return redirect('otp_view') #profile
+        #else:
+            #error_message = 'Invalid username or password'
+            #return render(request, 'login.html', {'error_message': error_message})
     
     
-
+@login_required()
 def profile(request):
     return render(request, 'users/profile.html')
 
