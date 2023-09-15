@@ -25,6 +25,20 @@ def register(request):
         form = UserRegisterForm()
         return render(request, 'users/register.html', {'form':form})
     
+def login(request):
+    error_message = None
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            request.session['username'] = username
+            return redirect('otp_view') #profile
+        else:
+            error_message = 'Invalid username or password'
+            return render(request, 'login.html', {'error_message': error_message})
+    
+    
 
 def profile(request):
     return render(request, 'users/profile.html')
@@ -59,4 +73,4 @@ def otp_view(request):
                 error_message = 'one time password has expired'
         else:
             error_message = 'Something went wrong'
-    return render(request, 'otp.html', {'error_message': error_message})
+    return render(request, 'users/otp.html', {'error_message': error_message})
