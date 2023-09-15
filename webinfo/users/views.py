@@ -64,7 +64,7 @@ def otp_view(request):
                 if totp.veryfy(otp):
                     user = get_object_or_404(User, username=username)
 
-                    login(request, user)
+                    register(request, user)
 
                     del request.session['otp_secret_key']
                     del request.session['otp_valid_date']
