@@ -21,8 +21,8 @@ def register(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
+           # password = form.cleaned_data.get('password1')
+           # user = authenticate(username=username, password=password)
             messages.success(request, f'Hi {username}, your account was created successfully')
             return redirect('home')
     else:
@@ -64,7 +64,7 @@ def otp_view(request):
                 if totp.veryfy(otp):
                     user = get_object_or_404(User, username=username)
 
-                    register(request, user)
+                    login(request, user)
 
                     del request.session['otp_secret_key']
                     del request.session['otp_valid_date']
