@@ -2,6 +2,7 @@ from django.shortcuts import render , redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from . forms import CustomUserCreationForm
+from . forms import EditProfileForm
 from django.contrib.auth import authenticate, login
 from .utils import send_otp 
 from datetime import datetime
@@ -9,6 +10,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from . models import CustomUser
 
 import pyotp
 
@@ -78,3 +80,15 @@ def otp_view(request):
         else:
             error_message = 'Something went wrong'
     return render(request, 'users/otp.html', {'error_message': error_message})
+
+def edit_user(request, id):
+    user = CustomUser.objects.get(id=id)
+    return render(request, 'edi_profile.html', {'user':user})
+
+def update(request, id):  
+    user = CustomUser.objects.get(id=id)  
+    form = EditProfileForm(request.POST, instance = user)  
+    if form.is_valid():  
+        form.save()  
+        return redirect("/")  
+    return render(request, 'edit_profile.html', {'user': user})
