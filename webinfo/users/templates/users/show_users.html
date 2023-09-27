@@ -7,22 +7,22 @@
         <thead>
             <th><input type="checkbox" id="checkall" /></th>
             <th>ID</th>
-            <th>Employee Name</th>
-            <th>Employee Email</th>
-            <th>Employee Contact</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>User Type</th>
             <th>Edit</th>
             <th>Delete</th>
         </thead>
         <tbody>
-        {% for employee in employees %}  
+        {% for user in users %}  
             <tr>  
             <td><input type="checkbox" class="checkthis" /></td>
-            <td>{{ employee.id }}</td>  
-            <td>{{ employee.name }}</td>  
-            <td>{{ employee.email }}</td>  
-            <td>{{ employee.contact }}</td>  
-            <td><a href="/edit/{{ employee.id }}" class="btn btn-primary">Edit</a></td>
-            <td><a href="/delete/{{ employee.id }}" class="btn btn-danger">Delete</a></td>  
+            <td>{{ user.id }}</td>  
+            <td>{{ user.username }}</td>  
+            <td>{{ user.email }}</td>  
+            <td>{{ user.user_type }}</td>  
+            <td><a href="/edit_user/{{ user.id }}" class="btn btn-primary">Edit</a></td>
+            <td><a href="/delete_user/{{ user.id }}" class="btn btn-danger">Delete</a></td>  
             </tr>  
         {% endfor %} 
         </tbody>

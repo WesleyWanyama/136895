@@ -17,7 +17,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
 
   </head>
-  <body id="bg" style="background-color:rgb(55, 53, 51);">
+  <body id="bg" style="background-color:#faf5e8;">
   {% load static %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="main-navbar">
         <div class="container">
@@ -40,7 +40,7 @@
                 <a href="{% url 'profile' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Profile </a>
                 <a href="{% url 'logout' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Logout </a>
                 {% if user.is_superuser == True%}
-                  <a href="{% url 'admin:index' %}" class="btn" style="color: white; background-color: #fd5e14;" type="submit" id="header-links">Manage Users</a>
+                  <a href="{% url 'admin_view' %}" class="btn" style="color: white; background-color: #fd5e14;" type="submit" id="header-links">Manage Users</a>
                 {% endif %}
                 {% else %}
                 <a href="{% url 'register' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Create Account </a>

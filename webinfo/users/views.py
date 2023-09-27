@@ -98,3 +98,11 @@ def update_user(request, id):
 
     return render(request, 'users/edit_profile.html', {'user': user, 'form': form})
 
+def admin_view(request):  
+    users = CustomUser.objects.all()  
+    return render(request,'users/show_users.html', {'users': users})
+
+def delete_user(request, id):  
+    user = CustomUser.objects.get(id=id)  
+    user.delete()  
+    return redirect('admin_view')
