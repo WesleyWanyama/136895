@@ -1,7 +1,7 @@
 from django.shortcuts import render , redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from . forms import UserRegisterForm
+from . forms import CustomUserCreationForm
 from django.contrib.auth import authenticate, login
 from .utils import send_otp 
 from datetime import datetime
@@ -17,7 +17,7 @@ def home(request):
 
 def register(request):
     if request.method == "POST":
-        form = UserRegisterForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -26,7 +26,7 @@ def register(request):
             messages.success(request, f'Hi {username}, your account was created successfully')
             return redirect('home')
     else:
-        form = UserRegisterForm()
+        form = CustomUserCreationForm()
         return render(request, 'users/register.html', {'form':form})
     
 #def login(request):
