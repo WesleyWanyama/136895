@@ -1,0 +1,37 @@
+{% extends 'users/base.html' %}
+  
+
+  
+{% block content %}
+<div class="col-md-12">
+    <form method="POST" class="post-form" action="/update_user/{{user.id}}">  
+    {% csrf_token %}  
+    <div class="container">   
+        <div class="col-12">  
+            <h3 style="color: aliceblue;">Edit Details</h3>  
+        </div> 
+        <div class="mb-3"> 
+            <label>User ID:</label>  
+            <input type="text" class="form-control" name="id" id="id_id" required maxlength="20" value="{{ user.id }}"/>    
+        </div> 
+        <div class="mb-3"> 
+            <label>Username:</label>  
+            <input type="text" class="form-control" name="username" id="id_username" required maxlength="100" value="{{ user.username }}" />  
+        </div> 
+        <div class="mb-3"> 
+            <label>Email:</label>  
+            <input type="email" class="form-control" name="email" id="id_email" required maxlength="254" value="{{ user.email }}" />  
+        </div> 
+        <div class="mb-3"> 
+            <label>User Type:</label>
+            <select class="form-control" name="user_type" id="id_user_type" required>
+                <option value="researcher" {% if user.user_type == 'researcher' %}selected{% endif %}>Researcher</option>
+                <option value="health_official" {% if user.user_type == 'health_official' %}selected{% endif %}>Health Official</option>
+            </select>  
+        </div> 
+        <div class="mb-3"> 
+            <button type="submit" class="btn btn-success btn-lg">Update</button>  
+        </div> 
+    </div>  
+    </form>  
+{% endblock content %}  

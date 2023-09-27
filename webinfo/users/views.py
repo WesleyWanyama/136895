@@ -83,12 +83,18 @@ def otp_view(request):
 
 def edit_user(request, id):
     user = CustomUser.objects.get(id=id)
-    return render(request, 'edi_profile.html', {'user':user})
+    return render(request, 'users/edit_profile.html', {'user':user})
 
-def update(request, id):  
-    user = CustomUser.objects.get(id=id)  
-    form = EditProfileForm(request.POST, instance = user)  
-    if form.is_valid():  
-        form.save()  
-        return redirect("/")  
-    return render(request, 'edit_profile.html', {'user': user})
+def update_user(request, id):
+    user = CustomUser.objects.get(id=id)
+
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = EditProfileForm(instance=user)
+
+    return render(request, 'users/edit_profile.html', {'user': user, 'form': form})
+

@@ -10,6 +10,12 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2', 'user_type']
 
 class EditProfileForm(forms.ModelForm):
+    USER_TYPE_CHOICES = [
+        ('researcher', 'Researcher'),
+        ('health_official', 'Health Official'),
+    ]
+    user_type = forms.ChoiceField(choices=USER_TYPE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'user_type']
+
