@@ -14,16 +14,18 @@
             <th>Delete</th>
         </thead>
         <tbody>
-        {% for user in users %}  
-            <tr>  
-            <td><input type="checkbox" class="checkthis" /></td>
-            <td>{{ user.id }}</td>  
-            <td>{{ user.username }}</td>  
-            <td>{{ user.email }}</td>  
-            <td>{{ user.user_type }}</td>  
-            <td><a href="/edit_user/{{ user.id }}" class="btn btn-primary">Edit</a></td>
-            <td><a href="/delete_user/{{ user.id }}" class="btn btn-danger">Delete</a></td>  
-            </tr>  
+            {% for user in users %}
+            {% if user.is_superuser == False%}  {# Check if the user is not a superuser #}
+                <tr>  
+                <td><input type="checkbox" class="checkthis" /></td>
+                <td>{{ user.id }}</td>  
+                <td>{{ user.username }}</td>  
+                <td>{{ user.email }}</td>  
+                <td>{{ user.user_type }}</td>  
+                <td><a href="/edit_user/{{ user.id }}" class="btn btn-primary">Edit</a></td>
+                <td><a href="/delete_user/{{ user.id }}" class="btn btn-danger">Delete</a></td>  
+                </tr>
+            {% endif %}
         {% endfor %} 
         </tbody>
         </table>
