@@ -4,7 +4,12 @@ from django.contrib import messages
 from . forms import CustomUserCreationForm
 from . forms import EditProfileForm
 from django.contrib.auth import authenticate, login
-from .utils import send_otp 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
+from .utils import generate_otp, send_otp_email
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.http import HttpResponse
@@ -31,56 +36,49 @@ def register(request):
         form = CustomUserCreationForm()
         return render(request, 'users/register.html', {'form':form})
     
-#def login(request):
-    #error_message = None
-    #if request.method == 'POST':
-        #username = request.POST['username']
-        #password = request.POST['password']
-        #user = authenticate(request, username=username, password=password)
-        #if user is not None:
-            #request.session['username'] = username
-            #return redirect('otp_view') #profile
-        #else:
-            #error_message = 'Invalid username or password'
-            #return render(request, 'login.html', {'error_message': error_message})
-    
-    
+
 @login_required()
 def profile(request):
     return render(request, 'users/profile.html')
 
-def otp_view(request):
-    error_message = None
-    if request.method == 'POST':
-        otp = request.POST['otp']
-        username = request.session['username']
+class LoginWithOTP(APIView):
+    def post(self, request):
+        email = request.data.get('email', '')
+        try:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            return Response({'error': 'User with this email does not exist.'}, status=status.HTTP_404_NOT_FOUND)
 
-        otp_secret_key = request.session['otp_secret_key']
-        otp_valid_date = request.session['otp_valid_date']
+        otp = generate_otp()
+        user.otp = otp
+        user.save()
 
-        if otp_secret_key and otp_valid_date is not None:
-            valid_date = datetime.fromisoformat(otp_valid_date)
+        send_otp_email(email, otp)
+        # send_otp_phone(phone_number, otp)
 
-            if valid_date > datetime.now():
-                totp = pyotp.TOTP(otp_secret_key, interval=60)
-                if totp.veryfy(otp):
-                    user = get_object_or_404(User, username=username)
+        return Response({'message': 'OTP has been sent to your email.'}, status=status.HTTP_200_OK)
 
-                    login(request, user)
+class ValidateOTP(APIView):
+    def post(self, request):
+        email = request.data.get('email', '')
+        otp = request.data.get('otp', '')
 
-                    del request.session['otp_secret_key']
-                    del request.session['otp_valid_date']
+        try:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            return Response({'error': 'User with this email does not exist.'}, status=status.HTTP_404_NOT_FOUND)
 
-                    return redirect('home')
-                
-                else:
-                    error_message = 'invalid one time password'
-            else:
-                error_message = 'one time password has expired'
+        if user.otp == otp:
+            user.otp = None  # Reset the OTP field after successful validation
+            user.save()
+
+            # Authenticate the user and create or get an authentication token
+            token, _ = Token.objects.get_or_create(user=user)
+
+            return Response({'token': token.key}, status=status.HTTP_200_OK)
         else:
-            error_message = 'Something went wrong'
-    return render(request, 'users/otp.html', {'error_message': error_message})
-
+            return Response({'error': 'Invalid OTP.'}, status=status.HTTP_400_BAD_REQUEST)
+    
 def edit_user(request, id):
     user = CustomUser.objects.get(id=id)
     return render(request, 'users/edit_profile.html', {'user':user})

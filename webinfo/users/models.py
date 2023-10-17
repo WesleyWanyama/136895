@@ -23,6 +23,7 @@ class CustomUser(AbstractUser):
     )
 
     email = models.EmailField()
+    otp = models.CharField(max_length=6, null=True, blank=True)
     password = models.CharField(max_length=128)  
     user_type = models.CharField(max_length=20)
     USER_TYPE_CHOICES = (
