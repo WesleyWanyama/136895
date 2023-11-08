@@ -104,3 +104,6 @@ def delete_user(request, id):
     user = CustomUser.objects.get(id=id)  
     user.delete()  
     return redirect('admin_view')
+
+def dashboard(request):
+    return render(request, 'users/dashboard.html')

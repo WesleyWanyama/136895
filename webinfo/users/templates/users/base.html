@@ -38,6 +38,7 @@
             <form class="d-flex" id="authstyle">
               {% if user.is_authenticated %}
                 <a href="{% url 'profile' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Profile </a>
+                <a href="{% url 'dashboard' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Dashboard</a>
                 <a href="{% url 'logout' %}" class="btn" style="color: white; background-color: #fd5e14;"type="submit" id="header-links"> Logout </a>
                 {% if user.is_superuser == True%}
                   <a href="{% url 'admin_view' %}" class="btn" style="color: white; background-color: #fd5e14;" type="submit" id="header-links">Manage Users</a>

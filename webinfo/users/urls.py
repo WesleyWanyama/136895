@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.home, name='home'),#we defined home function in views.py
     path('register/', views.register, name='register'),
     path('profile/', views.profile, name='profile'),
+    path('dashboard/', views.dashboard, name='dashboard'),
     path('admin_view/', views.admin_view, name='admin_view'),
     path('edit_user/<int:id>', views.edit_user, name='edit_user'),  
     path('update_user/<int:id>', views.update_user, name='update_user'),
