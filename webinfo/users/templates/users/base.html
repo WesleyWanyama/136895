@@ -39,6 +39,9 @@
               <li><a class="dropdown-item" href="#">Data Download</a></li>
             </ul>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'upload_file' %}">Share Data</a>
+          </li>
           <form class="d-flex" id="authstyle">
            {% if user.is_authenticated %}
             <li class="nav-item">

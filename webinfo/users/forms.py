@@ -19,3 +19,6 @@ class EditProfileForm(forms.ModelForm):
         model = CustomUser
         fields = ['username', 'email', 'user_type']
 
+class FileUploadForm(forms.Form):
+    file = forms.FileField()
+

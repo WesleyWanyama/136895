@@ -16,7 +16,12 @@ from django.http import HttpResponse
 from django.shortcuts import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from . models import CustomUser
-
+from google.cloud import storage
+from django.conf import settings
+from .models import UploadedFile
+from .forms import FileUploadForm
+import pandas as pd
+from pandas.errors import EmptyDataError
 import pyotp
 
 def home(request):
@@ -110,3 +115,46 @@ def dashboard(request):
 
 def maps(request):
     return render(request, 'users/maps.html')
+
+def upload_file(request):
+    if request.method == 'POST':
+        form = FileUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            uploaded_file = form.cleaned_data['file']
+
+            # Check if the file is empty
+            if uploaded_file.size == 0:
+                # Handle the case where the file is empty
+                return redirect('upload_empty')  # Redirect to a different page or handle it as needed
+
+            try:
+                # Process the file (example: read CSV file using pandas)
+                df = pd.read_csv(uploaded_file)
+                # Perform further processing as needed
+
+                # Upload the file to Google Cloud Storage
+                upload_to_gcs(uploaded_file.name, uploaded_file.read())
+
+                return redirect('upload_success')
+
+            except EmptyDataError:
+                # Handle the case where the file has no data (empty DataFrame)
+                return redirect('upload_empty')  # Redirect to a different page or handle it as needed
+
+    else:
+        form = FileUploadForm()
+
+    return render(request, 'users/upload_file.html', {'form': form})
+
+def upload_success(request):
+    uploaded_files = UploadedFile.objects.all()
+    return render(request, 'users/upload_success.html', {'uploaded_files': uploaded_files})
+
+def upload_to_gcs(file_name, file_content, bucket_name=None):
+    if bucket_name is None:
+        bucket_name = settings.GS_BUCKET_NAME
+
+    client = storage.Client()
+    bucket = client.get_bucket(bucket_name)
+    blob = bucket.blob(file_name)
+    blob.upload_from_string(file_content)

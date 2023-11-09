@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import google.auth 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -162,3 +163,12 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True  
 EMAIL_HOST_USER = 'weswanyama@gmail.com'  
 EMAIL_HOST_PASSWORD = 'jgmuvwzmaqeaiteg'  
+
+#GCP CONFIGURATION
+GS_BUCKET_NAME = 'isproject2'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'C:/Users/Rona/Downloads/isproject2-104a9ce7e2e3.json'
+GS_PROJECT_ID = 'isproject2'
+GS_MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_DEFAULT_ACL = 'publicRead'
