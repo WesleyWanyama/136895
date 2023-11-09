@@ -1,8 +1,60 @@
 {% extends 'users/base.html' %}
 {% load static %}
 {% block content %}
-    <link rel="stylesheet" href="{% static 'css/main.css' %} ">
-    <div>
-      <p>Pushing P</p>
+<section id="hero">
+  <div class="hero-container">
+    <div id="heroCarousel" data-bs-interval="5000" class="carousel slide carousel-fade" data-bs-ride="carousel">
+
+      <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
+
+      <div class="carousel-inner" role="listbox">
+
+        <!-- Slide 1 -->
+        <div class="carousel-item active" style="background-image: url('{% static 'img/slide/map.jpg' %}')">
+          <div class="carousel-container">
+            <div class="carousel-content">
+              <h2 class="animate__animated animate__fadeInDown">Maps Module</h2>
+              <p class="animate__animated animate__fadeInUp">View data spatially: Explore data using interactive maps to uncover patterns and trends. Gain insights from location-based data: Understand the geographical distribution of data and its relationship to other factors.</p>
+              <a href="" class="btn-get-started animate__animated animate__fadeInUp">ENTER MAPS</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="carousel-item" style="background-image: url('{% static '/img/slide/dashboard.jpg' %}')'">
+          <div class="carousel-container">
+            <div class="carousel-content">
+              <h2 class="animate__animated fanimate__adeInDown">Dashboards</h2>
+              <p class="animate__animated animate__fadeInUp">Make data-driven decisions with ease: Easily access and interpret data to inform your decision-making.</p>
+              <a href="" class="btn-get-started animate__animated animate__fadeInUp">VIEW DASHBOARDS</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="carousel-item" style="background-image: url('{% static '/img/slide/spreadsheet.jpg' %}'')">
+          <div class="carousel-container">
+            <div class="carousel-content">
+              <h2 class="animate__animated animate__fadeInDown">Data Download</h2>
+              <p class="animate__animated animate__fadeInUp">Access data in a convenient format: Download data as CSV files for further analysis or integration with other tools.</p>
+              <a href="" class="btn-get-started animate__animated animate__fadeInUp">DOWNLOAD DATA</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
+      </a>
+
+      <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
+        <span class="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
+      </a>
+
     </div>
+  </div>
+</section><!-- End Hero -->
+
+
 {% endblock content %}
