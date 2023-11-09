@@ -107,3 +107,6 @@ def delete_user(request, id):
 
 def dashboard(request):
     return render(request, 'users/dashboard.html')
+
+def maps(request):
+    return render(request, 'users/maps.html')
