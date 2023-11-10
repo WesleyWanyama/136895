@@ -22,6 +22,9 @@ from .models import UploadedFile
 from .forms import FileUploadForm
 import pandas as pd
 from pandas.errors import EmptyDataError
+from datetime import datetime, timedelta
+import csv
+import pytz
 import pyotp
 
 def home(request):
@@ -158,3 +161,40 @@ def upload_to_gcs(file_name, file_content, bucket_name=None):
     bucket = client.get_bucket(bucket_name)
     blob = bucket.blob(file_name)
     blob.upload_from_string(file_content)
+
+
+def list_bucket_contents(bucket_name):
+    """Lists all the objects in a GCS bucket."""
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blobs = bucket.list_blobs()
+
+    # Set the expiration time to 1 hour from now
+    expiration_time = datetime.utcnow() + timedelta(hours=1)
+
+    # Set the timezone to UTC
+    expiration_time = expiration_time.replace(tzinfo=pytz.UTC)
+
+    # Extract object names and create download links
+    file_list = [{'name': blob.name, 'download_url': blob.generate_signed_url(expiration=expiration_time)}
+                 for blob in blobs]
+
+    return file_list
+
+def download_data(request):
+    try:
+        # Replace 'isproject2' with your actual GCS bucket name
+        bucket_name = 'isproject2'
+
+        # Get a list of all files in the bucket
+        file_list = list_bucket_contents(bucket_name)
+
+        # You can use the file_list to create context for rendering the template
+        context = {'file_list': file_list}
+
+        # Render a template or customize as per your requirements
+        return render(request, 'users/download_data.html', context)
+    except Exception as e:
+        # Handle other exceptions
+        return HttpResponse(f"An error occurred: {str(e)}", status=500)
+    

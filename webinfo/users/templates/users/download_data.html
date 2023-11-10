@@ -1,0 +1,25 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+<div style="margin-top: 50px;">
+    <h1>Download Files</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>Download</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file_info in file_list %}
+                <tr>
+                    <td>{{ file_info.name }}</td>
+                    <td>
+                        <a href="{{ file_info.download_url }}" target="_blank" class="btn btn-primary">Download</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

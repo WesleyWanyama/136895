@@ -10,6 +10,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('maps/', views.maps, name='maps'),
     path('admin_view/', views.admin_view, name='admin_view'),
+    path('download_data/', views.download_data, name='download_data'),
     path('upload/', views.upload_file, name='upload_file'),
     path('upload_success/', views.upload_success, name='upload_success'),
     path('edit_user/<int:id>', views.edit_user, name='edit_user'),  

@@ -41,3 +41,12 @@ class CustomUser(AbstractUser):
 class UploadedFile(models.Model):
     file = models.FileField(upload_to='uploads/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+class DownloadDataModel(models.Model):
+    # Define your fields here, e.g., name, content, etc.
+    name = models.CharField(max_length=255)
+    content = models.TextField()
+    # Add other fields as needed
+
+    def __str__(self):
+        return self.name
