@@ -1,12 +1,22 @@
 {% extends 'users/base.html' %}
 {% load static %}
 {% block content %}
-<div style="margin-top: 50px;">
-<h2>Upload File</h2>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit">Upload</button>
-</form>
+<div class="container mt-5" style="margin-top: 50px;">
+    <div class="jumbotron">
+        <h1 class="display-4">Share Your Data</h1>
+        <p class="lead">Contribute valuable data for in-depth analysis on insecticide resistance and vector control monitoring. Your data plays a crucial role in enhancing our understanding of disease control strategies.</p>
+        <hr class="my-4">
+        <p>Choose a file below to share your data with us:</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}            
+                {{ form }}    
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock content %}

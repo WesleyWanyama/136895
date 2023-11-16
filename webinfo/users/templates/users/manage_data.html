@@ -1,0 +1,67 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5" style="margin-top: 50px;">
+    <h2>Data Management</h2>
+    <!-- Bootstrap table to display file list -->
+    <table class="table">
+    <thead>
+        <tr>
+            <th scope="col">File Name</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for file_info in file_list %}
+            <tr>
+                <td>{{ file_info.name }}</td>
+                <td>
+                    <a href="{{ file_info.download_url }}" target="_blank" class="btn btn-primary">View</a>
+                    <button class="btn btn-danger" onclick="deleteFile('{{ file_info.name }}')">Delete</button>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- JavaScript function for delete action -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function deleteFile(file_name) {
+        // Get the CSRF token
+        var csrftoken = getCookie('csrftoken');
+
+        // Implement the logic to delete the file using AJAX
+        $.ajax({
+            url: `/delete_file/?file_name=${file_name}`,
+            method: 'POST',
+            headers: {'X-CSRFToken': csrftoken},
+            success: function(response) {
+                console.log('Delete successful:', response);
+                // Optionally, you can update the UI or perform additional actions
+            },
+            error: function(error) {
+                console.error('Delete failed:', error);
+                // Handle errors or display a message to the user
+            }
+        });
+    }
+</script>
+
+{% endblock content %}

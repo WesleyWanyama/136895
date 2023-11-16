@@ -21,6 +21,7 @@ from django.conf import settings
 from .models import UploadedFile
 from .forms import FileUploadForm
 import pandas as pd
+from django.http import JsonResponse
 from pandas.errors import EmptyDataError
 from datetime import datetime, timedelta
 import csv
@@ -197,4 +198,44 @@ def download_data(request):
     except Exception as e:
         # Handle other exceptions
         return HttpResponse(f"An error occurred: {str(e)}", status=500)
-    
+
+def manage_data(request):
+    try:
+        # Replace 'isproject2' with your actual GCS bucket name
+        bucket_name = 'isproject2'
+
+        # Get a list of all files in the bucket
+        file_list = list_bucket_contents(bucket_name)
+
+        # You can use the file_list to create context for rendering the template
+        context = {'file_list': file_list}
+
+        # Render the template
+        return render(request, 'users/manage_data.html', context)
+    except Exception as e:
+        # Handle other exceptions
+        return HttpResponse(f"An error occurred: {str(e)}", status=500)  
+
+def delete_file(request):
+    if request.method == 'POST':
+        file_name = request.GET.get('file_name', '')
+        try:
+            # Get the file name from the request parameters
+            file_name = request.GET.get('file_name')
+
+            # Replace 'isproject2' with your actual GCS bucket name
+            bucket_name = 'isproject2'
+
+            # Delete the file from the GCS bucket
+            client = storage.Client()
+            bucket = client.get_bucket(bucket_name)
+            blob = bucket.blob(file_name)
+            blob.delete()
+
+            # Return a success response
+            return JsonResponse({'message': 'File deleted successfully'})
+
+        except Exception as e:
+            # Handle exceptions and return an error response
+            return JsonResponse({'error': str(e)}, status=500)
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
