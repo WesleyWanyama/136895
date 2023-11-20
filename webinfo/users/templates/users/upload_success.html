@@ -1,12 +1,9 @@
 {% extends 'users/base.html' %}
 {% load static %}
 {% block content %}
-<div style="margin-top: 50px;">
-<h2>Upload Successful</h2>
-<ul>
-{% for uploaded_file in uploaded_files %}
-    <li>{{ uploaded_file.file.name }} - {{ uploaded_file.uploaded_at }}</li>
-{% endfor %}
-</ul>
+<div style="margin-top: 60px;">
+    <h1>File uploaded successfully</h1>
+    <h3 style="margin-left: 500px;">Success!! File uploaded successfully!</h3>
+    <a href="{% url 'download_data' %}" class="btn btn-primary" style="margin-left: 700px;">View Data</a>
 </div>
 {% endblock content %}
