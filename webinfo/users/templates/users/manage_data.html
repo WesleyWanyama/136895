@@ -33,7 +33,7 @@
             var cookies = document.cookie.split(';');
             for (var i = 0; i < cookies.length; i++) {
                 var cookie = jQuery.trim(cookies[i]);
-                // Does this cookie string begin with the name we want?
+                
                 if (cookie.substring(0, name.length + 1) === (name + '=')) {
                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                     break;
@@ -47,18 +47,17 @@
         // Get the CSRF token
         var csrftoken = getCookie('csrftoken');
 
-        // Implement the logic to delete the file using AJAX
         $.ajax({
             url: `/delete_file/?file_name=${file_name}`,
             method: 'POST',
             headers: {'X-CSRFToken': csrftoken},
             success: function(response) {
                 console.log('Delete successful:', response);
-                // Optionally, you can update the UI or perform additional actions
+                
             },
             error: function(error) {
                 console.error('Delete failed:', error);
-                // Handle errors or display a message to the user
+               
             }
         });
     }

@@ -6,14 +6,14 @@ class CustomUser(AbstractUser):
         Group,
         verbose_name='groups',
         blank=True,
-        related_name='custom_users'  # Custom related name for groups
+        related_name='custom_users'  
     )
 
     user_permissions = models.ManyToManyField(
         Permission,
         verbose_name='user permissions',
         blank=True,
-        related_name='custom_users'  # Custom related name for user_permissions
+        related_name='custom_users'  
     )
     
  
@@ -46,10 +46,9 @@ class UploadedFile(models.Model):
         return self.file.name
 
 class DownloadDataModel(models.Model):
-    # Define your fields here, e.g., name, content, etc.
+    # Fields
     name = models.CharField(max_length=255)
     content = models.TextField()
-    # Add other fields as needed
 
     def __str__(self):
         return self.name

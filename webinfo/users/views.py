@@ -95,12 +95,12 @@ def upload_file(request):
             # Check if the file is empty
             if uploaded_file.size == 0:
                 # Handle the case where the file is empty
-                return redirect('upload_empty')  # Redirect to a different page or handle it as needed
+                return redirect('upload_empty')  
 
             try:
-                # Process the file (example: read CSV file using pandas)
+                # Read the file
                 df = pd.read_csv(uploaded_file)
-                # Perform further processing as needed
+                
 
                 # Upload the file to Google Cloud Storage
                 upload_to_gcs(uploaded_file.name, uploaded_file.read())
@@ -109,7 +109,7 @@ def upload_file(request):
 
             except EmptyDataError:
                 # Handle the case where the file has no data (empty DataFrame)
-                return redirect('upload_empty')  # Redirect to a different page or handle it as needed
+                return redirect('upload_empty')  
 
     else:
         form = FileUploadForm()
@@ -151,36 +151,30 @@ def list_bucket_contents(bucket_name):
 @login_required(login_url='login')
 def download_data(request):
     try:
-        # Replace 'isproject2' with your actual GCS bucket name
         bucket_name = 'isproject2'
 
         # Get a list of all files in the bucket
         file_list = list_bucket_contents(bucket_name)
 
-        # You can use the file_list to create context for rendering the template
+        # context for rendering the template
         context = {'file_list': file_list}
 
-        # Render a template or customize as per your requirements
         return render(request, 'users/download_data.html', context)
     except Exception as e:
-        # Handle other exceptions
+        # Handle error
         return HttpResponse(f"An error occurred: {str(e)}", status=500)
 
 def manage_data(request):
     try:
-        # Replace 'isproject2' with your actual GCS bucket name
         bucket_name = 'isproject2'
 
         # Get a list of all files in the bucket
         file_list = list_bucket_contents(bucket_name)
 
-        # You can use the file_list to create context for rendering the template
         context = {'file_list': file_list}
 
-        # Render the template
         return render(request, 'users/manage_data.html', context)
     except Exception as e:
-        # Handle other exceptions
         return HttpResponse(f"An error occurred: {str(e)}", status=500)  
 
 def delete_file(request):
@@ -190,7 +184,6 @@ def delete_file(request):
             # Get the file name from the request parameters
             file_name = request.GET.get('file_name')
 
-            # Replace 'isproject2' with your actual GCS bucket name
             bucket_name = 'isproject2'
 
             # Delete the file from the GCS bucket
